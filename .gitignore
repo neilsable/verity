@@ -1,0 +1,67 @@
+# =============================================================================
+# VERITY — .gitignore
+# =============================================================================
+
+# --- Secrets (NEVER commit these) -------------------------------------------
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.cert
+secrets/
+
+# --- Python ------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.installed.cfg
+*.egg
+.venv/
+venv/
+env/
+.uv/
+pip-wheel-metadata/
+
+# --- Test / Coverage ---------------------------------------------------------
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# --- Node / Frontend ---------------------------------------------------------
+node_modules/
+.next/
+out/
+.vercel/
+npm-debug.log*
+yarn-error.log*
+
+# --- Docker ------------------------------------------------------------------
+*.log
+
+# --- IDEs --------------------------------------------------------------------
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# --- Celery ------------------------------------------------------------------
+celerybeat-schedule
+celerybeat.pid
+
+# --- Database ----------------------------------------------------------------
+*.sqlite
+*.db
+
+# --- Pinecone local mock -----------------------------------------------------
+pinecone_local/
