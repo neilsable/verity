@@ -1,7 +1,6 @@
 """
-VERITY — Celery Tasks
-Async task runners for research jobs.
-Each task bridges the sync Celery world into the async LangGraph agent world.
+VERITY — Celery Tasks (Phase 3 update)
+Wires the LangGraph agent pipeline into the async task runner.
 """
 
 import asyncio
@@ -18,8 +17,6 @@ logger = structlog.get_logger(__name__)
 
 
 class ResearchTask(Task):
-    """Base task class with shared async event loop management."""
-
     _loop: asyncio.AbstractEventLoop | None = None
 
     @property
@@ -48,25 +45,18 @@ def run_research_job(
     ticker: str,
     research_brief: str,
 ) -> dict[str, Any]:
-    """
-    Main research job task. Dispatches to the LangGraph agent pipeline.
-    Runs as a Celery task but executes async code via the event loop.
-    """
     log = logger.bind(job_id=job_id, ticker=ticker, task_id=self.request.id)
     log.info("research_task_started")
-
     try:
         result = self.run_async(
             _execute_research_pipeline(job_id, ticker, research_brief)
         )
         log.info("research_task_completed", cost_usd=result.get("cost_usd"))
         return result
-
     except SoftTimeLimitExceeded:
-        log.error("research_task_timeout", timeout_seconds=600)
-        self.run_async(_mark_job_failed(job_id, "Research job timed out after 10 minutes"))
+        log.error("research_task_timeout")
+        self.run_async(_mark_job_failed(job_id, "Research job timed out"))
         raise
-
     except Exception as exc:
         log.exception("research_task_error", error=str(exc))
         self.run_async(_mark_job_failed(job_id, str(exc)))
@@ -74,27 +64,41 @@ def run_research_job(
 
 
 async def _execute_research_pipeline(
-    job_id: str,
-    ticker: str,
-    research_brief: str,
+    job_id: str, ticker: str, research_brief: str,
 ) -> dict[str, Any]:
-    """
-    Async entry point for the LangGraph agent pipeline.
-    TODO Phase 3: wire in the actual LangGraph graph.
-    """
-    # Placeholder — will be replaced in Phase 3
+    from app.agents.graph import research_graph
+    from app.models.schemas import ResearchState
     from app.services.cache import publish_job_progress
 
+    await publish_job_progress(job_id, {"event": "job_started", "job_id": job_id, "ticker": ticker})
+
+    initial_state = ResearchState(
+        job_id=uuid.UUID(job_id),
+        ticker=ticker.upper(),
+        research_brief=research_brief,
+    )
+
+    final_state = await research_graph.ainvoke(initial_state)
+    report = final_state.final_report
+    cost = final_state.total_cost_usd
+
     await publish_job_progress(job_id, {
-        "event": "job_started",
-        "job_id": job_id,
-        "ticker": ticker,
+        "event": "job_completed", "job_id": job_id, "cost_usd": cost,
+        "citations": len(report.citations) if report else 0,
+        "confidence": report.overall_confidence if report else 0,
     })
 
-    return {"job_id": job_id, "status": "completed", "cost_usd": 0.0}
+    return {
+        "job_id": job_id, "status": "completed", "cost_usd": cost,
+        "errors": final_state.errors,
+        "report_id": str(report.report_id) if report else None,
+    }
 
 
 async def _mark_job_failed(job_id: str, error_message: str) -> None:
-    """Update job status to failed in the database."""
-    # TODO Phase 3: update DB
     logger.error("job_marked_failed", job_id=job_id, error=error_message)
+    try:
+        from app.services.cache import publish_job_progress
+        await publish_job_progress(job_id, {"event": "job_failed", "job_id": job_id, "error": error_message})
+    except Exception:
+        pass
