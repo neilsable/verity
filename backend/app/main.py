@@ -36,11 +36,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     Initialise connections on startup, close them on shutdown.
     """
     setup_logging()
-    logger.info(
-        "verity_starting",
-        env=settings.app_env,
-        version="0.1.0",
-    )
+    print(f"VERITY starting env={settings.app_env}")
 
     # Startup: initialise DB pool, Redis, Pinecone
     from app.db.database import init_db
