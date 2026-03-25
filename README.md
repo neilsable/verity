@@ -290,7 +290,7 @@ At $0.19 average, you could run 1,000 research reports for $190. A single equity
 
 | | |
 |---|---|
-| 🌐 **Frontend** | [verity-frontend-delta.vercel.app](https://verity-frontend-delta.vercel.app) |
+| 🌐 **Frontend** | [verity-frontend-delta.vercel.app](https://verity-research.vercel.app/) |
 | ⚙️ **API Docs** | [zestful-abundance-production.up.railway.app/docs](https://zestful-abundance-production.up.railway.app/docs) |
 | 🎨 **Figma Design** | [figma.com/design/1TX70sKPFQ9vVEqiA7FKcN](https://www.figma.com/design/1TX70sKPFQ9vVEqiA7FKcN) |
 
