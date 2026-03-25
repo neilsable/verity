@@ -2,7 +2,7 @@
 
 <br/>
 
-```
+                     ```
 ██╗   ██╗███████╗██████╗ ██╗████████╗██╗   ██╗
 ██║   ██║██╔════╝██╔══██╗██║╚══██╔══╝╚██╗ ██╔╝
 ██║   ██║█████╗  ██████╔╝██║   ██║    ╚████╔╝ 
@@ -13,7 +13,7 @@
 
 **Autonomous Equity Research — Powered by 8 AI Agents**
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-verity--frontend--delta.vercel.app-c9a84c?style=for-the-badge&logo=vercel&logoColor=black)](https://verity-frontend-delta.vercel.app)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-verity--frontend--delta.vercel.app-c9a84c?style=for-the-badge&logo=vercel&logoColor=black)](https://verity-research.vercel.app/)
 [![API](https://img.shields.io/badge/API-Railway-0B0D0E?style=for-the-badge&logo=railway&logoColor=white)](https://zestful-abundance-production.up.railway.app/docs)
 [![GitHub](https://img.shields.io/badge/GitHub-neilsable%2Fverity-181717?style=for-the-badge&logo=github)](https://github.com/neilsable/verity)
 [![Built with Claude](https://img.shields.io/badge/Powered%20by-Claude%20Sonnet%204-6B48FF?style=for-the-badge)](https://anthropic.com)
@@ -32,8 +32,6 @@
 ## What is VERITY?
 
 VERITY is a production-grade multi-agent AI system that does the work of a junior equity research analyst — automatically. You give it a ticker and a research brief. Eight specialised agents run in parallel, analysing SEC filings, earnings call transcripts, live peer comparisons, and recent news. The output is a fully cited, red-teamed research note. Every claim traced to a source. No hallucinations.
-
-**Built by one person. Overnight. Because the right tool didn't exist.**
 
 ---
 
