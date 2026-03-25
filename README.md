@@ -21,7 +21,6 @@
 
 <br/>
 
-> *"I got frustrated with how long equity research takes. So I built the infrastructure to do it in 4 minutes."*
 > — **Neil Sable, 2026**
 
 <br/>
